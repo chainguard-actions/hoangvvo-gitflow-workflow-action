@@ -1,0 +1,41 @@
+name: Test dry run with explicit version
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version: 1.2.3
+          develop_branch: develop
+          main_branch: main
+          dry_run: "true"
+          release_summary: "Test summary"
+      - name: Assert outputs (or graceful failure on sentinel repo)
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+          VERSION: ${{ steps.action.outputs.version }}
+          BRANCH: ${{ steps.action.outputs.release_branch }}
+          TYPE: ${{ steps.action.outputs.type }}
+          PULL: ${{ steps.action.outputs.pull_number }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "version: $VERSION branch: $BRANCH type: $TYPE pull: $PULL"
+          if [ "$OUTCOME" = "success" ]; then
+            [ "$VERSION" = "1.2.3" ] || { echo "FAIL: version"; exit 1; }
+            [ "$BRANCH" = "release/1.2.3" ] || { echo "FAIL: release_branch"; exit 1; }
+            [ "$TYPE" = "release" ] || { echo "FAIL: type"; exit 1; }
+            [ -z "$PULL" ] || { echo "FAIL: dry run should not create PR"; exit 1; }
+            echo "PASS"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

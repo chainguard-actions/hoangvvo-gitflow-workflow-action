@@ -1,0 +1,11 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "lib": ["es2022", "DOM"],
+    "outDir": "dist",
+    "rootDir": "./src",
+    "allowJs": true,
+    "esModuleInterop": true
+  },
+  "include": ["./src/**/*"]
+}
