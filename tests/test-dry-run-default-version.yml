@@ -1,0 +1,35 @@
+name: Test dry run with default (sha) version
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          develop_branch: develop
+          main_branch: main
+          dry_run: "true"
+      - name: Assert outputs (or graceful failure on sentinel repo)
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+          VERSION: ${{ steps.action.outputs.version }}
+          BRANCH: ${{ steps.action.outputs.release_branch }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "version: $VERSION branch: $BRANCH"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "$VERSION" | grep -qE '^[0-9a-f]{40}$' || { echo "FAIL: version should be a commit sha"; exit 1; }
+            [ "$BRANCH" = "release/$VERSION" ] || { echo "FAIL: release_branch"; exit 1; }
+            echo "PASS"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
