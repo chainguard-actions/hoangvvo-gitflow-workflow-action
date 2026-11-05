@@ -8,6 +8,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 | Version | Tag | Upstream commit | Hardening report |
 |---------|-----|-----------------|------------------|
+| 0.3.6 | [`0.3.6`](https://github.com/chainguard-actions/hoangvvo-gitflow-workflow-action/tree/0.3.6) | [`8e11179`](https://github.com/hoangvvo/gitflow-workflow-action/commit/8e11179e3b7534415a8e5422ffe333812a7e96d2) | [`HARDENING.md`](https://github.com/chainguard-actions/hoangvvo-gitflow-workflow-action/blob/0.3.6/HARDENING.md) |
 | 0.3.7 | [`0.3.7`](https://github.com/chainguard-actions/hoangvvo-gitflow-workflow-action/tree/0.3.7) | [`6f190b6`](https://github.com/hoangvvo/gitflow-workflow-action/commit/6f190b60eedc913790eeeee8077426c297ea9c0e) | [`HARDENING.md`](https://github.com/chainguard-actions/hoangvvo-gitflow-workflow-action/blob/0.3.7/HARDENING.md) |
 | 0.3.8 | [`0.3.8`](https://github.com/chainguard-actions/hoangvvo-gitflow-workflow-action/tree/0.3.8) | [`a8dcd72`](https://github.com/hoangvvo/gitflow-workflow-action/commit/a8dcd721fe5390b7f837873d5af2497980890a7e) | [`HARDENING.md`](https://github.com/chainguard-actions/hoangvvo-gitflow-workflow-action/blob/0.3.8/HARDENING.md) |
 
